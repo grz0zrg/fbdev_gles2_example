@@ -26,7 +26,7 @@ const GLfloat quadData[] = {
     // vertices
     -1.0f, 1.0f, 0.0f, -1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, -1.0f, 0.0f,
     // UV
-	0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f
+    0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f
 };
 
 const char *simpleVs = "attribute mediump vec3 vp; \
@@ -43,16 +43,16 @@ const char *simpleFs = "varying mediump vec2 uv; \
     }";
 
 void printShaderLog(GLuint obj, int type) {
-	static char log[16384];
+    static char log[16384];
 
-	if (type == 0) {
-		glGetProgramInfoLog(obj, 16384, 0, log);
-	} else if (type == 1) {
-		glGetShaderInfoLog(obj, 16384, 0, log);
-	}
-	log[16383] = 0;
+    if (type == 0) {
+        glGetProgramInfoLog(obj, 16384, 0, log);
+    } else if (type == 1) {
+        glGetShaderInfoLog(obj, 16384, 0, log);
+    }
+    log[16383] = 0;
 
-	fprintf(stderr, "printShaderLog : \n%s\n\n", log);
+    fprintf(stderr, "printShaderLog : \n%s\n\n", log);
 }
  
 GLuint loadShader(const char *shader_source, GLenum type) {
@@ -63,16 +63,16 @@ GLuint loadShader(const char *shader_source, GLenum type) {
     glShaderSource(shader, 1, &shader_source, NULL);
     glCompileShader(shader);
 
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
-	if (status != GL_TRUE) {
-		fprintf(stderr, "loadShader : Failed to compile shader\n");
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
+    if (status != GL_TRUE) {
+        fprintf(stderr, "loadShader : Failed to compile shader\n");
 
-		printShaderLog(shader, 1);
+        printShaderLog(shader, 1);
 
-		glDeleteShader(shader);
-		
+        glDeleteShader(shader);
+                
         return 0;
-	}
+    }
 
     return shader;
 }
@@ -84,22 +84,22 @@ void render(GLint vbo, GLint vp, GLint vu) {
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (GLvoid*) (12 * sizeof(GLfloat)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (GLvoid*) (12 * sizeof(GLfloat)));
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 GLuint setupFullscreenQuad() {
-	GLuint vbo = 0, vao = 0;
+    GLuint vbo = 0, vao = 0;
 
     int data_count = 12;
 
     glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-	// Vertices + UV
-	glBufferData(GL_ARRAY_BUFFER, (data_count + (data_count / 3) * 2) * sizeof(GLfloat), &quadData[0], GL_STATIC_DRAW);
+    // Vertices + UV
+    glBufferData(GL_ARRAY_BUFFER, (data_count + (data_count / 3) * 2) * sizeof(GLfloat), &quadData[0], GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     return vbo;
